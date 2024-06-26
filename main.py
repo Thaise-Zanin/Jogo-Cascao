@@ -39,15 +39,17 @@ def jogar(nome):
     movimentoYPersona  = 0
     posicaoXgotadechuva = 400
     posicaoYgotadechuva = -240
-    posicaoXraio = 370
-    posicaoYraio = -240
+    posicaoXraio = 100
+    posicaoYraio = -350
     velocidadegotadechuva = 1
-    velocidaderaio = -1
+    velocidaderaio = 1
     pontos = 0
     larguraPersona = 190
     alturaPersona = 100
-    larguagotadechuva  = 200
+    larguragotadechuva  = 200
     alturagotadechuva  = 204
+    larguraraio = 200
+    alturaraio = 204
     dificuldade  = 20
 
     while True:
@@ -92,25 +94,33 @@ def jogar(nome):
             posicaoXgotadechuva = random.randint(0,800)
             pygame.mixer.Sound.play(chuvaSound)
         elif posicaoYraio > 600:
-            posicaoYraio =-240
+            posicaoYraio = -240
             pontos = pontos + 1
             velocidaderaio = velocidaderaio + 1
             posicaoXraio = random.randint(0,800)
+            pygame.mixer.Sound.play(trovaoSound)
 
             
         tela.blit( gotadechuva, (posicaoXgotadechuva, posicaoYgotadechuva) )
+        tela.blit( raio, (posicaoXraio, posicaoYraio) )
         
         texto = fonte.render(nome+"- Pontos: "+str(pontos), True, branco)
         tela.blit(texto, (10,10))
         
         pixelsPersonaX = list(range(posicaoXPersona, posicaoXPersona+larguraPersona))
         pixelsPersonaY = list(range(posicaoYPersona, posicaoYPersona+alturaPersona))
-        pixelsgotadechuvaX = list(range(posicaoXgotadechuva, posicaoXgotadechuva + larguagotadechuva))
+        pixelsgotadechuvaX = list(range(posicaoXgotadechuva, posicaoXgotadechuva + larguragotadechuva))
         pixelsgotadechuvaY = list(range(posicaoYgotadechuva, posicaoYgotadechuva + alturagotadechuva))
+        pixelsraioX = list(range(posicaoXraio, posicaoXraio + larguraraio))
+        pixelsraioY = list(range(posicaoYraio, posicaoYraio + alturaraio))
         
         #print( len( list( set(pixelsgotadechuvaX).intersection(set(pixelsPersonaX))   ) )   )
         if  len( list( set(pixelsgotadechuvaY).intersection(set(pixelsPersonaY))) ) > dificuldade:
             if len( list( set(pixelsgotadechuvaX).intersection(set(pixelsPersonaX))   ) )  > dificuldade:
+                dead(nome, pontos)
+        
+        elif len(set(pixelsraioY).intersection(set(pixelsPersonaY))) > dificuldade:
+            if len(set(pixelsraioX).intersection(set(pixelsPersonaX))) > dificuldade:
                 dead(nome, pontos)
         
     
