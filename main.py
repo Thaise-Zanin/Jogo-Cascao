@@ -19,23 +19,32 @@ tamanho = (800,600)
 tela = pygame.display.set_mode( tamanho ) 
 pygame.display.set_caption("Jogo do Cascão")
 pygame.display.set_icon(icone)
-chuvaSound = pygame.mixer.Sound("recursos\somChuva.mp3")
-trovaoSound = pygame.mixer.Sound("recursos\somTrovao.mp3")
+
 fonte = pygame.font.SysFont("Cooper Black",28)
 fonteStart = pygame.font.SysFont("Cooper Black",55)
 fonterestart = pygame.font.SysFont("Cooper Black",40)
 fonteMorte = pygame.font.SysFont("Cooper Black",120)
+
 pygame.mixer.music.load("recursos\correndoMolhado.mp3")
+finalSound = pygame.mixer.Sound("recursos\somTriste.mp3")
+chuvaSound = pygame.mixer.Sound("recursos\somChuva.mp3")
+trovaoSound = pygame.mixer.Sound("recursos\somTrovao.mp3")
+
+chuvaSound.set_volume(0.1) 
+trovaoSound.set_volume(0.1) 
+finalSound.set_volume(0.1)
+pygame.mixer.music.set_volume(0.1)
 
 branco = (255,255,255)
 azul = (56, 108, 215)
+amarelo = (237, 235, 153)
 
 
 def jogar(nome):
     pygame.mixer.Sound.play(chuvaSound)
     pygame.mixer.music.play(-180)
-    posicaoXPersona = 400
-    posicaoYPersona = 300
+    posicaoXPersona = 300
+    posicaoYPersona = 350
     movimentoXPersona  = 0
     movimentoYPersona  = 0
     posicaoXgotadechuva = 400
@@ -121,10 +130,12 @@ def jogar(nome):
         #print( len( list( set(pixelsgotadechuvaX).intersection(set(pixelsPersonaX))   ) )   )
         if  len( list( set(pixelsgotadechuvaY).intersection(set(pixelsPersonaY))) ) > dificuldade:
             if len( list( set(pixelsgotadechuvaX).intersection(set(pixelsPersonaX))   ) )  > dificuldade:
+                chuvaSound.stop()
                 dead(nome, pontos)
         
         elif len(set(pixelsraioY).intersection(set(pixelsPersonaY))) > dificuldade:
             if len(set(pixelsraioX).intersection(set(pixelsPersonaX))) > dificuldade:
+                chuvaSound.stop()
                 dead(nome, pontos)
         
     
@@ -135,7 +146,7 @@ def jogar(nome):
 
 def dead(nome, pontos):
     pygame.mixer.music.stop()
-    pygame.mixer.Sound.play(trovaoSound)
+    pygame.mixer.Sound.play(finalSound)
     
     jogadas  = {}
     try:
@@ -156,14 +167,16 @@ def dead(nome, pontos):
             if evento.type == pygame.QUIT:
                 quit()
             elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_RETURN:
+                finalSound.stop()
                 jogar(nome)
 
             elif evento.type == pygame.MOUSEBUTTONDOWN:
                 if buttonStart.collidepoint(evento.pos):
+                    finalSound.stop()
                     jogar(nome)
         tela.fill(branco)
         tela.blit(fundoDead, (0,0))
-        buttonStart = pygame.draw.rect(tela, azul, (35,482,750,100),0)
+        buttonStart = pygame.draw.rect(tela, amarelo, (35,482,750,100),0)
         textoStart = fonterestart.render("RESTART", True, branco)
         tela.blit(textoStart, (500,505))
         textoEnter = fonte.render("Press enter to continue...", True, branco)
@@ -189,12 +202,13 @@ def ranking():
                 quit()
             elif evento.type == pygame.MOUSEBUTTONDOWN:
                 if buttonStart.collidepoint(evento.pos):
+                    finalSound.stop()
                     start()
 
-        tela.fill(azul)
-        buttonStart = pygame.draw.rect(tela, azul, (35,482,750,100),0)
+        tela.fill(amarelo)
+        buttonStart = pygame.draw.rect(tela, amarelo, (35,482,750,100),0)
         textoStart = fonteStart.render("BACK TO START", True, branco)
-        tela.blit(textoStart, (330,482))
+        tela.blit(textoStart, (170,500))
         
         
         posicaoY = 50
