@@ -14,6 +14,7 @@ fundoDead = pygame.image.load("recursos/fundofinal.png")
 
 gotadechuva = pygame.image.load("recursos/gotachuva.png")
 raio = pygame.image.load("recursos/raio.png")
+nuvem = pygame.image.load("recursos/nuvem.webp")
 tamanho = (800,600)
 tela = pygame.display.set_mode( tamanho ) 
 pygame.display.set_caption("Jogo do Cascão")
@@ -51,6 +52,8 @@ def jogar(nome):
     larguraraio = 200
     alturaraio = 204
     dificuldade  = 20
+    posicaoXnuvem = 440
+    posicaoYnuvem = 25
 
     while True:
         for evento in pygame.event.get():
@@ -84,6 +87,7 @@ def jogar(nome):
         tela.blit(fundo, (0,0) )
         #pygame.draw.circle(tela, azul, (posicaoXPersona,posicaoYPersona), 40, 0 )
         tela.blit( cascao, (posicaoXPersona, posicaoYPersona) )
+        tela.blit( nuvem, (posicaoXnuvem, posicaoYnuvem) )
         
         posicaoYgotadechuva = posicaoYgotadechuva + velocidadegotadechuva
         posicaoYraio = posicaoYraio + velocidaderaio
