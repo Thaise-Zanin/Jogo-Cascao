@@ -7,42 +7,42 @@ pygame.init()
 
 relogio = pygame.time.Clock()
 icone  = pygame.image.load("recursos/icone.png")
-iron = pygame.image.load("recursos/iron.png")
-fundo = pygame.image.load("recursos/fundo.png")
+cascao = pygame.image.load("recursos/cascao.png")
+fundo = pygame.image.load("recursos/fundoprincipal.png")
 fundoStart = pygame.image.load("recursos/fundoStart.png")
 fundoDead = pygame.image.load("recursos/fundoDead.png")
 
-missel = pygame.image.load("recursos/missile.png")
+gotadechuva = pygame.image.load("recursos/gotachuva.png")
 tamanho = (800,600)
 tela = pygame.display.set_mode( tamanho ) 
 pygame.display.set_caption("Jogo do Cascão")
 pygame.display.set_icon(icone)
-missileSound = pygame.mixer.Sound("recursos/missile.wav")
-explosaoSound = pygame.mixer.Sound("recursos/explosao.wav")
+chuvaSound = pygame.mixer.Sound("recursos\somChuva.mp3")
+trovaoSound = pygame.mixer.Sound("recursos\somTrovao.mp3")
 fonte = pygame.font.SysFont("comicsans",28)
 fonteStart = pygame.font.SysFont("comicsans",55)
 fonteMorte = pygame.font.SysFont("arial",120)
-pygame.mixer.music.load("recursos/ironsound.mp3")
+pygame.mixer.music.load("recursos\correndoMolhado.mp3")
 
 branco = (255,255,255)
 preto = (0, 0 ,0 )
 
 
 def jogar(nome):
-    pygame.mixer.Sound.play(missileSound)
+    pygame.mixer.Sound.play(chuvaSound)
     pygame.mixer.music.play(-1)
     posicaoXPersona = 400
     posicaoYPersona = 300
     movimentoXPersona  = 0
     movimentoYPersona  = 0
-    posicaoXMissel = 400
-    posicaoYMissel = -240
-    velocidadeMissel = 1
+    posicaoXgotadechuva = 400
+    posicaoYgotadechuva = -240
+    velocidadegotadechuva = 1
     pontos = 0
-    larguraPersona = 250
-    alturaPersona = 127
-    larguaMissel  = 50
-    alturaMissel  = 250
+    larguraPersona = 190
+    alturaPersona = 100
+    larguagotadechuva  = 200
+    alturagotadechuva  = 204
     dificuldade  = 20
 
     while True:
@@ -83,30 +83,30 @@ def jogar(nome):
         tela.fill(branco)
         tela.blit(fundo, (0,0) )
         #pygame.draw.circle(tela, preto, (posicaoXPersona,posicaoYPersona), 40, 0 )
-        tela.blit( iron, (posicaoXPersona, posicaoYPersona) )
+        tela.blit( cascao, (posicaoXPersona, posicaoYPersona) )
         
-        posicaoYMissel = posicaoYMissel + velocidadeMissel
-        if posicaoYMissel > 600:
-            posicaoYMissel = -240
+        posicaoYgotadechuva = posicaoYgotadechuva + velocidadegotadechuva
+        if posicaoYgotadechuva > 600:
+            posicaoYgotadechuva = -240
             pontos = pontos + 1
-            velocidadeMissel = velocidadeMissel + 1
-            posicaoXMissel = random.randint(0,800)
-            pygame.mixer.Sound.play(missileSound)
+            velocidadegotadechuva = velocidadegotadechuva + 1
+            posicaoXgotadechuva = random.randint(0,800)
+            pygame.mixer.Sound.play(chuvaSound)
             
             
-        tela.blit( missel, (posicaoXMissel, posicaoYMissel) )
+        tela.blit( gotadechuva, (posicaoXgotadechuva, posicaoYgotadechuva) )
         
         texto = fonte.render(nome+"- Pontos: "+str(pontos), True, branco)
         tela.blit(texto, (10,10))
         
         pixelsPersonaX = list(range(posicaoXPersona, posicaoXPersona+larguraPersona))
         pixelsPersonaY = list(range(posicaoYPersona, posicaoYPersona+alturaPersona))
-        pixelsMisselX = list(range(posicaoXMissel, posicaoXMissel + larguaMissel))
-        pixelsMisselY = list(range(posicaoYMissel, posicaoYMissel + alturaMissel))
+        pixelsgotadechuvaX = list(range(posicaoXgotadechuva, posicaoXgotadechuva + larguagotadechuva))
+        pixelsgotadechuvaY = list(range(posicaoYgotadechuva, posicaoYgotadechuva + alturagotadechuva))
         
-        #print( len( list( set(pixelsMisselX).intersection(set(pixelsPersonaX))   ) )   )
-        if  len( list( set(pixelsMisselY).intersection(set(pixelsPersonaY))) ) > dificuldade:
-            if len( list( set(pixelsMisselX).intersection(set(pixelsPersonaX))   ) )  > dificuldade:
+        #print( len( list( set(pixelsgotadechuvaX).intersection(set(pixelsPersonaX))   ) )   )
+        if  len( list( set(pixelsgotadechuvaY).intersection(set(pixelsPersonaY))) ) > dificuldade:
+            if len( list( set(pixelsgotadechuvaX).intersection(set(pixelsPersonaX))   ) )  > dificuldade:
                 dead(nome, pontos)
         
     
@@ -117,7 +117,7 @@ def jogar(nome):
 
 def dead(nome, pontos):
     pygame.mixer.music.stop()
-    pygame.mixer.Sound.play(explosaoSound)
+    pygame.mixer.Sound.play(trovaoSound)
     
     jogadas  = {}
     try:
@@ -194,7 +194,7 @@ def ranking():
 
 
 def start():
-    nome = simpledialog.askstring("Iron Man","Nome Completo:")
+    nome = simpledialog.askstring("Cascão","Nome Completo:")
     
     
     
