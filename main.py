@@ -9,10 +9,11 @@ relogio = pygame.time.Clock()
 icone  = pygame.image.load("recursos/icone.png")
 cascao = pygame.image.load("recursos/cascao.png")
 fundo = pygame.image.load("recursos/fundoprincipal.png")
-fundoStart = pygame.image.load("recursos/fundoStart.png")
-fundoDead = pygame.image.load("recursos/fundoDead.png")
+fundoStart = pygame.image.load("recursos/fundoinicio.png")
+fundoDead = pygame.image.load("recursos/fundofinal.png")
 
 gotadechuva = pygame.image.load("recursos/gotachuva.png")
+raio = pygame.image.load("recursos/raio.png")
 tamanho = (800,600)
 tela = pygame.display.set_mode( tamanho ) 
 pygame.display.set_caption("Jogo do Cascão")
@@ -30,14 +31,17 @@ preto = (0, 0 ,0 )
 
 def jogar(nome):
     pygame.mixer.Sound.play(chuvaSound)
-    pygame.mixer.music.play(-1)
+    pygame.mixer.music.play(-180)
     posicaoXPersona = 400
     posicaoYPersona = 300
     movimentoXPersona  = 0
     movimentoYPersona  = 0
     posicaoXgotadechuva = 400
     posicaoYgotadechuva = -240
+    posicaoXraio = 370
+    posicaoYraio = -240
     velocidadegotadechuva = 1
+    velocidaderaio = -1
     pontos = 0
     larguraPersona = 190
     alturaPersona = 100
@@ -57,14 +61,7 @@ def jogar(nome):
                 movimentoXPersona = 0
             elif evento.type == pygame.KEYUP and evento.key == pygame.K_LEFT:
                 movimentoXPersona = 0
-            elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_UP:
-                movimentoYPersona = -10
-            elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_DOWN:
-                movimentoYPersona = 10
-            elif evento.type == pygame.KEYUP and evento.key == pygame.K_UP:
-                movimentoYPersona = 0
-            elif evento.type == pygame.KEYUP and evento.key == pygame.K_DOWN:
-                movimentoYPersona = 0
+
                 
         posicaoXPersona = posicaoXPersona + movimentoXPersona            
         posicaoYPersona = posicaoYPersona + movimentoYPersona            
@@ -86,13 +83,19 @@ def jogar(nome):
         tela.blit( cascao, (posicaoXPersona, posicaoYPersona) )
         
         posicaoYgotadechuva = posicaoYgotadechuva + velocidadegotadechuva
+        posicaoYraio = posicaoYraio + velocidaderaio
         if posicaoYgotadechuva > 600:
             posicaoYgotadechuva = -240
             pontos = pontos + 1
             velocidadegotadechuva = velocidadegotadechuva + 1
             posicaoXgotadechuva = random.randint(0,800)
             pygame.mixer.Sound.play(chuvaSound)
-            
+        elif posicaoYraio > 600:
+            posicaoYraio =-240
+            pontos = pontos + 1
+            velocidaderaio = velocidaderaio + 1
+            posicaoXraio = random.randint(0,800)
+
             
         tela.blit( gotadechuva, (posicaoXgotadechuva, posicaoYgotadechuva) )
         
