@@ -6,11 +6,12 @@ from tkinter import simpledialog
 pygame.init()
 
 relogio = pygame.time.Clock()
-icone  = pygame.image.load("recursos/icone.png")
+icone  = pygame.image.load("recursos\iconecascao.png")
 cascao = pygame.image.load("recursos/cascao.png")
 fundo = pygame.image.load("recursos/fundoprincipal.png")
 fundoStart = pygame.image.load("recursos/fundoinicio.png")
 fundoDead = pygame.image.load("recursos/fundofinal.png")
+sol = pygame.image.load("recursos/sol.png")
 
 gotadechuva = pygame.image.load("recursos/gotachuva.png")
 raio = pygame.image.load("recursos/raio.png")
@@ -23,7 +24,7 @@ pygame.display.set_icon(icone)
 fonte = pygame.font.SysFont("Cooper Black",28)
 fonteStart = pygame.font.SysFont("Cooper Black",55)
 fonterestart = pygame.font.SysFont("Cooper Black",40)
-fonteMorte = pygame.font.SysFont("Cooper Black",120)
+
 
 pygame.mixer.music.load("recursos\correndoMolhado.mp3")
 finalSound = pygame.mixer.Sound("recursos\somTriste.mp3")
@@ -38,6 +39,7 @@ pygame.mixer.music.set_volume(0.1)
 branco = (255,255,255)
 azul = (56, 108, 215)
 amarelo = (237, 235, 153)
+preto = (0,0,0)
 
 
 def jogar(nome):
@@ -45,6 +47,11 @@ def jogar(nome):
     pygame.mixer.music.play(-180)
     posicaoXPersona = 300
     posicaoYPersona = 350
+    solX = 50
+    solY = 50
+    escalasol = 1
+    velocidadesol = 0.007
+    crescendosol = True
     movimentoXPersona  = 0
     movimentoYPersona  = 0
     posicaoXgotadechuva = 400
@@ -56,13 +63,16 @@ def jogar(nome):
     pontos = 0
     larguraPersona = 190
     alturaPersona = 100
-    larguragotadechuva  = 200
-    alturagotadechuva  = 204
-    larguraraio = 200
-    alturaraio = 204
+    larguragotadechuva  = 40
+    alturagotadechuva  = 40
+    larguraraio = 50
+    alturaraio = 50
     dificuldade  = 20
     posicaoXnuvem = 440
     posicaoYnuvem = 25
+    velocidadenuvem = 0.6
+    direcao = -1
+
 
     while True:
         for evento in pygame.event.get():
@@ -77,6 +87,21 @@ def jogar(nome):
             elif evento.type == pygame.KEYUP and evento.key == pygame.K_LEFT:
                 movimentoXPersona = 0
 
+        posicaoXnuvem += velocidadenuvem * direcao
+        if posicaoXnuvem <= 200:
+            direcao = 1
+        elif posicaoXnuvem >= 440:
+            direcao = -1      
+
+        if crescendosol:
+            escalasol += velocidadesol
+            if escalasol >= 1.5:
+                crescendosol = False
+
+        else:
+            escalasol -= velocidadesol
+            if escalasol <= 1:
+                crescendosol = True
                 
         posicaoXPersona = posicaoXPersona + movimentoXPersona            
         posicaoYPersona = posicaoYPersona + movimentoYPersona            
@@ -90,6 +115,8 @@ def jogar(nome):
             posicaoYPersona = 10
         elif posicaoYPersona > 473:
             posicaoYPersona = 463
+
+        
         
             
         tela.fill(branco)
@@ -97,6 +124,10 @@ def jogar(nome):
         #pygame.draw.circle(tela, azul, (posicaoXPersona,posicaoYPersona), 40, 0 )
         tela.blit( cascao, (posicaoXPersona, posicaoYPersona) )
         tela.blit( nuvem, (posicaoXnuvem, posicaoYnuvem) )
+        solX = int(sol.get_width() * escalasol)
+        solY = int(sol.get_height() * escalasol)
+        solredimencionado = pygame.transform.scale(sol, (solX,solY))
+        tela.blit(solredimencionado, (solX, solY))
         
         posicaoYgotadechuva = posicaoYgotadechuva + velocidadegotadechuva
         posicaoYraio = posicaoYraio + velocidaderaio
@@ -174,13 +205,14 @@ def dead(nome, pontos):
                 if buttonStart.collidepoint(evento.pos):
                     finalSound.stop()
                     jogar(nome)
-        tela.fill(branco)
+
+        tela.fill(preto)
         tela.blit(fundoDead, (0,0))
         buttonStart = pygame.draw.rect(tela, amarelo, (35,482,750,100),0)
-        textoStart = fonterestart.render("RESTART", True, branco)
+        textoStart = fonterestart.render("REINICIAR", True, preto)
         tela.blit(textoStart, (500,505))
-        textoEnter = fonte.render("Press enter to continue...", True, branco)
-        tela.blit(textoEnter, (60,515))
+        textoEnter = fonterestart.render("CONTINUAR", True, preto)
+        tela.blit(textoEnter, (70,505))
         pygame.display.update()
         relogio.tick(60)
 

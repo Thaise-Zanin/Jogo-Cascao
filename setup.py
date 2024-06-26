@@ -1,7 +1,7 @@
 # pip install cx_freeze
 import cx_Freeze
 executaveis = [ 
-               cx_Freeze.Executable(script="main.py", icon="recursos\icone.png") ]
+               cx_Freeze.Executable(script="main.py", icon="recursos/iconedocascao.ico") ]
 cx_Freeze.setup(
     name = "Cascão",
     options={
