@@ -20,13 +20,14 @@ pygame.display.set_caption("Jogo do Cascão")
 pygame.display.set_icon(icone)
 chuvaSound = pygame.mixer.Sound("recursos\somChuva.mp3")
 trovaoSound = pygame.mixer.Sound("recursos\somTrovao.mp3")
-fonte = pygame.font.SysFont("comicsans",28)
-fonteStart = pygame.font.SysFont("comicsans",55)
-fonteMorte = pygame.font.SysFont("arial",120)
+fonte = pygame.font.SysFont("Cooper Black",28)
+fonteStart = pygame.font.SysFont("Cooper Black",55)
+fonterestart = pygame.font.SysFont("Cooper Black",40)
+fonteMorte = pygame.font.SysFont("Cooper Black",120)
 pygame.mixer.music.load("recursos\correndoMolhado.mp3")
 
 branco = (255,255,255)
-preto = (0, 0 ,0 )
+azul = (56, 108, 215)
 
 
 def jogar(nome):
@@ -79,7 +80,7 @@ def jogar(nome):
             
         tela.fill(branco)
         tela.blit(fundo, (0,0) )
-        #pygame.draw.circle(tela, preto, (posicaoXPersona,posicaoYPersona), 40, 0 )
+        #pygame.draw.circle(tela, azul, (posicaoXPersona,posicaoYPersona), 40, 0 )
         tela.blit( cascao, (posicaoXPersona, posicaoYPersona) )
         
         posicaoYgotadechuva = posicaoYgotadechuva + velocidadegotadechuva
@@ -148,11 +149,11 @@ def dead(nome, pontos):
                     jogar(nome)
         tela.fill(branco)
         tela.blit(fundoDead, (0,0))
-        buttonStart = pygame.draw.rect(tela, preto, (35,482,750,100),0)
-        textoStart = fonteStart.render("RESTART", True, branco)
-        tela.blit(textoStart, (400,482))
+        buttonStart = pygame.draw.rect(tela, azul, (35,482,750,100),0)
+        textoStart = fonterestart.render("RESTART", True, branco)
+        tela.blit(textoStart, (500,505))
         textoEnter = fonte.render("Press enter to continue...", True, branco)
-        tela.blit(textoEnter, (60,482))
+        tela.blit(textoEnter, (60,515))
         pygame.display.update()
         relogio.tick(60)
 
@@ -176,8 +177,8 @@ def ranking():
                 if buttonStart.collidepoint(evento.pos):
                     start()
 
-        tela.fill(preto)
-        buttonStart = pygame.draw.rect(tela, preto, (35,482,750,100),0)
+        tela.fill(azul)
+        buttonStart = pygame.draw.rect(tela, azul, (35,482,750,100),0)
         textoStart = fonteStart.render("BACK TO START", True, branco)
         tela.blit(textoStart, (330,482))
         
@@ -213,12 +214,12 @@ def start():
 
         tela.fill(branco)
         tela.blit(fundoStart, (0,0))
-        buttonStart = pygame.draw.rect(tela, preto, (35,482,750,100),0)
-        buttonRanking = pygame.draw.rect(tela, preto, (35,50,200,50),0,30)
+        buttonStart = pygame.draw.rect(tela, azul, (35,482,750,100),0)
+        buttonRanking = pygame.draw.rect(tela, azul, (35,50,200,50),0,30)
         textoRanking = fonte.render("Ranking", True, branco)
-        tela.blit(textoRanking, (90,50))
+        tela.blit(textoRanking, (72,58))
         textoStart = fonteStart.render("START", True, branco)
-        tela.blit(textoStart, (330,482))
+        tela.blit(textoStart, (308,500))
 
         
         
