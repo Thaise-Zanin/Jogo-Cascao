@@ -2,11 +2,12 @@ import pygame
 import random
 import os
 from tkinter import simpledialog
+from extra.funcoes import limparTela
 
 pygame.init()
 
 relogio = pygame.time.Clock()
-icone  = pygame.image.load("recursos\iconecascao.png")
+icone  = pygame.image.load("recursos/iconecascao.png")
 cascao = pygame.image.load("recursos/cascao.png")
 fundo = pygame.image.load("recursos/fundoprincipal.png")
 fundoStart = pygame.image.load("recursos/fundoinicio.png")
